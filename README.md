@@ -9,21 +9,21 @@
 
 1. Go into your minishell folder and clone this repo
 2. Run ``cd minishell-tester && bash test.sh all``
-3. Run specific test by ``bash test.sh \[echo\ exit pipe etc\]``
+3. Run specific test by ``bash test.sh [echo exit pipe etc..]``
 
 ## What does it test ?
 
 - ``echo``
-- ``cd``
-- ``pwd``
+- ``cd + pwd``
 - ``exit``
-- ``| pipes``
-- ``> >> < << redirections``
-- ``env expansions``
+- ``pipe |``
+- ``redirect > >> < << ``
 - ``export``
 - ``env``
 - ``unset``
 - ``exit status ($?)``
+- ``syntax errors``
+- ``bonus`` in progress
 
 ## What should you test by yourself ?
 

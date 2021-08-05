@@ -74,7 +74,7 @@ function exec_test()
 }
 
 if [ "$1" == "" ] || [ "$1" == "help" ]; then
-  printf "$BOLDMAGENTA\n\tAvailable arg: \n$RED\tall$RESET echo cd pipe env1 export redirect multi syntax exit\n"
+  printf "$BOLDMAGENTA\n\tAvailable arg: \n$RED\tall$RESET echo cd pipe env export redirect multi syntax exit\n"
 fi
 if [ "$1" == "all" ]; then
   printf "$BOLDMAGENTA    _____ _ _ _____ _____ _ _ ______ _ _ \n"
@@ -121,7 +121,7 @@ fi
 
 
 # ENV EXPANSIONS
-if [ "$1" == "env1" ] || [ "$1" == "all" ]; then
+if [ "$1" == "env" ] || [ "$1" == "all" ]; then
   printf $BOLDMAGENTA"\n\tENV EXPANSIONS TESTS\n"$RESET
 	exec_test 'echo test test'
 	exec_test 'echo test'
