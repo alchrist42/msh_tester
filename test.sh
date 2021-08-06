@@ -74,7 +74,7 @@ function exec_test()
 }
 
 if [ "$1" == "" ] || [ "$1" == "help" ]; then
-  printf "$BOLDMAGENTA\n\tAvailable arg: \n$RED\tall$RESET echo cd pipe env export redirect multi syntax exit\n"
+  printf "$BOLDMAGENTA\n\tAvailable arg: \n$YELLOW\tall$RESET echo cd pipe env export redirect multi syntax exit$GREEN bonus$RESET \n"
 fi
 if [ "$1" == "all" ]; then
   printf "$BOLDMAGENTA    _____ _ _ _____ _____ _ _ ______ _ _ \n"
@@ -223,6 +223,42 @@ if [ "$1" == "exit" ] || [ "$1" == "all" ]; then
   exec_test "cd gdhahahad"
   exec_test "ls -la | wtf"
 fi
+
+
+# BONUS
+if [ "$1" == "bonus" ]; then
+  # Compile and set executable rights
+  make -C bonus ../ > /dev/null
+  cp ../minishell .
+  chmod 755 minishell
+
+  printf $BOLDMAGENTA"\n\tBONUS\n"$RESET
+  exec_test "\"'$USER'\""
+  exec_test "'\"$USER\"'"
+
+  exec_test "true && ls"
+  exec_test "false&&ls"
+  exec_test "true||ls"
+  exec_test "false || ls"
+  exec_test "true || echo 1 && echo 2"
+  exec_test "false || echo 1 && echo 2"
+  exec_test "true || (echo 1 && echo 2)"
+  exec_test "true || echo 1 && echo 2 || echo 3"
+  exec_test "(ls)"
+  exec_test "( ls )"
+  exec_test " ls )"
+  exec_test "( ls " 
+  exec_test "true || (echo 1 && echo 2) || echo 3"
+  exec_test "true || (echo 1 && echo 2) && echo 3"
+  exec_test "true || ((echo 1 && echo 2) && echo 3)"
+  exec_test "(true || (echo 1 && echo 2) && echo 3)"
+  exec_test "ls && (touch 1 && pwd) && "
+
+  exec_test "ls *"
+  exec_test "ls M*e"
+  exec_test "ls *.mp3"
+fi
+
 
 if [[ "$1" != "" ]]; then
   if [[ $GOOD == $TOTAL ]]; then
