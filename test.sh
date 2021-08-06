@@ -42,8 +42,8 @@ function exec_test()
     # echo $command
     echo $command > $pipe
   done
-  echo 'exit\n' > $pipe
-  sleep 0.01
+  echo 'exit' > $pipe
+  sleep 0.02
   wait $!
   ES_1=$?
   TEST1=$(cat msh_log)
@@ -228,35 +228,39 @@ fi
 # BONUS
 if [ "$1" == "bonus" ]; then
   # Compile and set executable rights
-  make -C bonus ../ > /dev/null
-  cp ../minishell .
-  chmod 755 minishell
+  # make bonus -C ../ > /dev/null
+  # cp ../minishell .
+  # chmod 755 minishell
 
   printf $BOLDMAGENTA"\n\tBONUS\n"$RESET
-  exec_test "\"'$USER'\""
-  exec_test "'\"$USER\"'"
+  exec_test "echo '"$USER"'"
+  exec_test "echo "'$USER'""
 
-  exec_test "true && ls"
-  exec_test "false&&ls"
-  exec_test "true||ls"
-  exec_test "false || ls"
-  exec_test "true || echo 1 && echo 2"
-  exec_test "false || echo 1 && echo 2"
-  exec_test "true || (echo 1 && echo 2)"
-  exec_test "true || echo 1 && echo 2 || echo 3"
-  exec_test "(ls)"
-  exec_test "( ls )"
-  exec_test " ls )"
-  exec_test "( ls " 
-  exec_test "true || (echo 1 && echo 2) || echo 3"
-  exec_test "true || (echo 1 && echo 2) && echo 3"
-  exec_test "true || ((echo 1 && echo 2) && echo 3)"
-  exec_test "(true || (echo 1 && echo 2) && echo 3)"
-  exec_test "ls && (touch 1 && pwd) && "
+  # exec_test "true && ls"
+  # exec_test "false&&ls"
+  # exec_test "true||ls"
+  # exec_test "false || ls"
+  # exec_test "true || echo 1 && echo 2"
+  # exec_test "false || echo 1 && echo 2"
+  # exec_test "true || (echo 1 && echo 2)"
+  # exec_test "true || echo 1 && echo 2 || echo 3"
+  # exec_test "(ls)"
+  # exec_test "( ls )"
 
-  exec_test "ls *"
-  exec_test "ls M*e"
-  exec_test "ls *.mp3"
+  # exec_test "true || (echo 1 && echo 2) || echo 3"
+  # exec_test "true || (echo 1 && echo 2) && echo 3"
+  # exec_test "(true || (echo 1 && echo 2) && echo 3)"
+  # exec_test "true || ((echo 1 && echo 2) && echo 3)"
+  
+  # exec_test "( )"
+  # exec_test " ls )"
+  # exec_test "( ls " 
+  # exec_test "ls && (touch 1 && pwd) && "
+
+
+  # exec_test "ls *"
+  # exec_test "ls M*e"
+  # exec_test "ls *.mp3"
 fi
 
 
