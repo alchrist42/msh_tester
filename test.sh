@@ -74,7 +74,8 @@ function exec_test()
 }
 
 if [ "$1" == "" ] || [ "$1" == "help" ]; then
-  printf "$BOLDMAGENTA\n\tAvailable arg: \n$YELLOW\tall$RESET echo cd pipe env export redirect multi syntax exit$GREEN bonus$RESET \n"
+  printf "$BOLDMAGENTA\n\tAvailable arg: \n$YELLOW\tall$RESET echo cd pipe env export redirect multi syntax exit\n\
+      $GREEN\tbonus$RESET quote wildcard oper\n"
 fi
 if [ "$1" == "all" ]; then
   printf "$BOLDMAGENTA    _____ _ _ _____ _____ _ _ ______ _ _ \n"
@@ -225,42 +226,65 @@ if [ "$1" == "exit" ] || [ "$1" == "all" ]; then
 fi
 
 
-# BONUS
-if [ "$1" == "bonus" ]; then
-  # Compile and set executable rights
-  # make bonus -C ../ > /dev/null
-  # cp ../minishell .
-  # chmod 755 minishell
 
-  printf $BOLDMAGENTA"\n\tBONUS\n"$RESET
+# BONUS QUOTES
+if [ "$1" == "bonus" ] || [ "$1" == "quote" ]; then
+  Compile and set executable rights
+  make bonus -C ../ > /dev/null
+  cp ../minishell .
+  chmod 755 minishell
+
+  printf $BOLDMAGENTA"\n\tBONUS QUOTE\n"$RESET
   exec_test "echo '"$USER"'"
   exec_test "echo "'$USER'""
+fi
 
-  # exec_test "true && ls"
-  # exec_test "false&&ls"
-  # exec_test "true||ls"
-  # exec_test "false || ls"
-  # exec_test "true || echo 1 && echo 2"
-  # exec_test "false || echo 1 && echo 2"
-  # exec_test "true || (echo 1 && echo 2)"
-  # exec_test "true || echo 1 && echo 2 || echo 3"
-  # exec_test "(ls)"
-  # exec_test "( ls )"
 
-  # exec_test "true || (echo 1 && echo 2) || echo 3"
-  # exec_test "true || (echo 1 && echo 2) && echo 3"
-  # exec_test "(true || (echo 1 && echo 2) && echo 3)"
-  # exec_test "true || ((echo 1 && echo 2) && echo 3)"
+# BONUS WILDCARD
+if [ "$1" == "bonus" ] || [ "$1" == "wildcard" ]; then
+  Compile and set executable rights
+  make bonus -C ../ > /dev/null
+  cp ../minishell .
+  chmod 755 minishell
+
+  printf $BOLDMAGENTA"\n\tBONUS WILDCARD\n"$RESET
+  exec_test "echo * | wc"
+  exec_test "cd .. ; echo * | wc"
+  exec_test "echo .* | wc"
+  exec_test "echo M*e"
+  exec_test "echo *a*e"
+  exec_test "echo *.mp3"
+  # exec_test "mkdir empty; cd empty; pwd; echo *; cd ..; rm -rf empty"
+fi
+
+# BONUS OPERATOR && || ()
+if [ "$1" == "bonus" ] || [ "$1" == "oper" ]; then
+  Compile and set executable rights
+  make bonus -C ../ > /dev/null
+  cp ../minishell .
+  chmod 755 minishell
+
+  printf $BOLDMAGENTA"\n\tBONUS OPERATOR \$\$ || () \n"$RESET
+  exec_test "true && ls"
+  exec_test "false&&ls"
+  exec_test "true||ls"
+  exec_test "false || ls"
+  exec_test "true || echo 1 && echo 2"
+  exec_test "false || echo 1 && echo 2"
+  exec_test "true || (echo 1 && echo 2)"
+  exec_test "true || echo 1 && echo 2 || echo 3"
+  exec_test "(ls)"
+  exec_test "( ls )"
+
+  exec_test "true || (echo 1 && echo 2) || echo 3"
+  exec_test "true || (echo 1 && echo 2) && echo 3"
+  exec_test "(true || (echo 1 && echo 2) && echo 3)"
+  exec_test "true || ((echo 1 && echo 2) && echo 3)"
   
-  # exec_test "( )"
-  # exec_test " ls )"
-  # exec_test "( ls " 
-  # exec_test "ls && (touch 1 && pwd) && "
-
-
-  # exec_test "ls *"
-  # exec_test "ls M*e"
-  # exec_test "ls *.mp3"
+  exec_test "( )"
+  exec_test " ls )"
+  exec_test "( ls " 
+  exec_test "ls && (touch 1 && pwd) && "
 fi
 
 
@@ -272,9 +296,9 @@ if [[ "$1" != "" ]]; then
   else
     printf $RED
   fi
-  printf "\nPASS: $GOOD / $TOTAL ($(( $GOOD * 100  / $TOTAL))%%)$RESET\n"
-  # echo
-
+  if (( $TOTAL > 0)); then
+    printf "\nPASS: $GOOD / $TOTAL ($(( $GOOD * 100  / $TOTAL))%%)$RESET\n"
+  fi
 fi
 
 rm -f $pipe lol ls 1 test big_file

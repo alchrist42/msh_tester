@@ -23,7 +23,9 @@
 - ``unset``
 - ``exit status ($?)``
 - ``syntax errors``
-- ``bonus`` in progress
+- ``quote (bonus)``
+- ``oper (bonus) $$ || ()``
+- ``wildcard (bonus)``
 
 ## What should you test by yourself ?
 
