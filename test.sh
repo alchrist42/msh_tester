@@ -141,7 +141,7 @@ if [ "$1" == "env" ] || [ "$1" == "all" ]; then
 	exec_test 'echo $TEST$TEST$TEST'
 	exec_test 'echo $TEST$TEST=lol$TEST""lol'
 	exec_test 'echo $TEST lol $TEST'
-	exec_test 'echo test "$TEST" test "$TEST" test'
+	exec_test 'echo test "$TEST" test "$TEST " test'
 	exec_test 'echo "$=TEST"'
 	exec_test 'echo "$"'
 	exec_test 'echo "$?TEST"'
@@ -166,7 +166,7 @@ if [ "$1" == "export" ] || [ "$1" == "all" ]; then
   exec_test 'export TEST=LOL ; export TEST+=LOL ; echo $TEST ; ' $ENV_SHOW
   exec_test $ENV_SHOW
   exec_test $EXPORT_SHOW
-  exec_test 'export TEST="ls -l - a" ; echo $TEST ; $LS ; ' $ENV_SHOW
+  exec_test 'export TEST="ls -l - a" ; echo $TEST ; ' $ENV_SHOW
 fi
 
 
@@ -223,9 +223,11 @@ if [ "$1" == "exit" ] || [ "$1" == "all" ]; then
   exec_test "exit -9223372036854775808"
   exec_test "exit 9223372036854775808"
   exec_test "exit -9223372036854775810"
+  exec_test "exit 99999999999999999999999"
+  exec_test "exit -99999999999999999999999"
   exec_test "exit -4"
   exec_test "exit wrong"
-  exec_test "exit wrong_command"
+  exec_test "exit  2 wrong_command"
   exec_test "gdagadgag"
   exec_test "ls -Z"
   exec_test "cd gdhahahad"
