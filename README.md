@@ -1,5 +1,4 @@
-# MSH-TESTER
-*based on Minishell-tester by [https://github.com/solaldunckel/minishell-tester](solaldunckel)*  
+# MSH-TESTER 
 
 ## Requirements
 
@@ -34,3 +33,5 @@ Some tests'l be show another error codes.
 Also it not good for checking projects with termcaps.
 
 Feel free to improve this tester !
+
+*based on Minishell-tester by [https://github.com/solaldunckel/minishell-tester](solaldunckel)* 

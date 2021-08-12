@@ -36,10 +36,11 @@ fi
 
 function exec_test()
 {
+  
+  # execute commands, separated by ';' in minishell, using nfifo
   ./minishell < $pipe >msh_log 2>&-  &
   IFS=';' read -ra CMND <<< "$@"
   for command in "${CMND[@]}"; do
-    # echo $command
     echo $command > $pipe
   done
   echo 'exit' > $pipe
@@ -48,8 +49,11 @@ function exec_test()
   ES_1=$?
   TEST1=$(cat msh_log)
 
+  # execute commands in bash
   TEST2=$(echo $@ | bash 2>&-)
   ES_2=$?
+
+  # compare result
   if [ "$TEST1" == "$TEST2" ] && [ "$ES_1" == "$ES_2" ]; then
     printf "$BOLDGREEN%s$RESET" "✓ "
     ((GOOD++))
@@ -103,7 +107,7 @@ if [ "$1" == "cd" ] || [ "$1" == "all" ]; then
   exec_test 'cd /Users ; pwd'
   exec_test 'cd ; pwd'
   exec_test 'cd . ; pwd'
-  exec_test 'mkdir test_dir ; cd test_dir ; rm -rf ../test_dir ; cd . ; pwd ; cd .. ; pwd'
+  exec_test 'mkdir test_dir ; cd test_dir ; rm -rf ../test_dir ; cd . ; cd .. ; pwd'
 fi
 
 
@@ -137,7 +141,7 @@ if [ "$1" == "env" ] || [ "$1" == "all" ]; then
 	exec_test 'echo $TEST$TEST$TEST'
 	exec_test 'echo $TEST$TEST=lol$TEST""lol'
 	exec_test 'echo $TEST lol $TEST'
-	exec_test 'echo test "" test "" test'
+	exec_test 'echo test "$TEST" test "$TEST" test'
 	exec_test 'echo "$=TEST"'
 	exec_test 'echo "$"'
 	exec_test 'echo "$?TEST"'
@@ -300,7 +304,7 @@ if [[ "$1" != "" ]] && (( $TOTAL > 0)); then
   else  
     printf $RED
   fi
-  printf "\nPASS: $GOOD / $TOTAL (%%$PROCENT)$RESET\n"
+  printf "\nPASS: $GOOD / $TOTAL ($PROCENT%%)$RESET\n"
 fi
 
-rm -f $pipe lol ls 1 test big_file
+rm -f $pipe lol ls 1 test big_file msh_log
