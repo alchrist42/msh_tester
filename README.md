@@ -2,7 +2,11 @@
 
 ## Requirements
 
-- You must have your prompt and any other message/banner printed on ``STDERR`` (like bash)
+#### !You must have your prompt and any other message/banner printed on ``STDERR`` (like bash)
+
+You can redirect the read line prompt with the following commands  
+``rl_outstream = stderr;`` - *before main loop*.  
+``write(2, ...);`` - *for any error or info messages*
 
 ## Usage
 
