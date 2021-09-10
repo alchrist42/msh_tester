@@ -2,17 +2,12 @@
 
 ## Requirements
 
-***
-  
-#### You must have your prompt and any other message/banner printed on ``STDERR`` (like bash)
-
-
 You can redirect the read line prompt with the following commands:  
 ``rl_outstream = stderr;`` - *before main loop*.  
 ``write(2, ...);`` - *for any error or info messages*  
-***  
-## Usage
 
+## Usage. 
+0. ! You must have your prompt and any other message/banner printed on ``STDERR`` (like bash). See above ^_^
 1. Go into your minishell folder and clone this repo
 2. Run ``cd msh_tester && bash test.sh all``
 3. Run specific test by ``bash test.sh [echo exit pipe etc..]``
