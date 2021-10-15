@@ -49,9 +49,9 @@ function exec_test()
   if [ $LEAKSMODE  ]; then
     echo "leaks $mshpid | grep 'leaks for' | grep -v ' 0 leaks' >> leaks" > $pipe
     echo 'exit' > $pipe 
-    sleep 0.01
+    sleep 0.02
     wait $!
-    if [ $(cat leaks) ]; then
+    if [[ $(cat leaks 2>&-) != "" ]]; then
       printf "\n$BOLDRED LEAKS! $YELLOW%s$RESET" "$@"
       rm -f leaks
     else

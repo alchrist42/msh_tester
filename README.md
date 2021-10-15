@@ -11,7 +11,7 @@ You can redirect the read line prompt with the following commands:
 1. Go into your minishell folder and clone this repo
 2. Run ``cd msh_tester && bash test.sh all``
 3. Run specific test by ``bash test.sh [echo exit pipe etc..]``
-4. Run only leaks mode by ``bash test.sh all leaks``
+4. Experimental! leaks mode  ``bash test.sh all leaks``
 
 ## What does it test ?
 
