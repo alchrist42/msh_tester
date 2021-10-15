@@ -44,7 +44,22 @@ function exec_test()
   for command in "${CMND[@]}"; do
     echo $command > $pipe
   done
-  # echo "leaks $mshpid | grep 'leaks for'  >> leaks" > $pipe
+
+  # only leaks mode
+  if [ $LEAKSMODE  ]; then
+    echo "leaks $mshpid | grep 'leaks for' | grep -v ' 0 leaks' >> leaks" > $pipe
+    echo 'exit' > $pipe 
+    sleep 0.01
+    wait $!
+    if [ $(cat leaks) ]; then
+      printf "\n$BOLDRED LEAKS! $YELLOW%s$RESET" "$@"
+      rm -f leaks
+    else
+      printf "$BOLDGREEN%s$RESET" "✓ "
+    fi
+    return
+  fi
+
   echo 'exit' > $pipe 
   sleep 0.01
   wait $!
@@ -99,6 +114,11 @@ if [ "$1" == "all" ]; then
   printf "|_| |_|_____|_| \_|_____|_____/|_| |_|______|______|______|\n$RESET"
 fi
 
+if [ "$2" == "leaks" ]; then
+  printf $BOLDBLUE"\n\tONLY LEAKS MODE\n"$RESET
+  LEAKSMODE=1
+  rm -f leaks
+fi
 
 # ECHO TESTS
 if [ "$1" == "echo" ] || [ "$1" == "all" ]; then
@@ -330,4 +350,4 @@ if [[ "$1" != "" ]] && (( $TOTAL > 0)); then
   printf "\nPASS: $GOOD / $TOTAL ($PROCENT%%)$RESET\n"
 fi
 
-rm -f $pipe lol ls 1 test big_file msh_log
+rm -f $pipe lol ls 1 test big_file msh_log leaks
