@@ -48,10 +48,22 @@ function exec_test()
   wait $!
   ES_1=$?
   TEST1=$(cat msh_log)
+  rm msh_log
+  sleep 0.02
 
   # execute commands in bash
-  TEST2=$(echo $@ | bash 2>&-)
+  bash < $pipe >msh_log 2>&-  &
+  IFS=';' read -ra CMND <<< "$@"
+  for command in "${CMND[@]}"; do
+    echo $command > $pipe
+  done
+  echo 'exit' > $pipe
+  sleep 0.02
+  wait $!
   ES_2=$?
+  TEST2=$(cat msh_log)
+  # TEST2=$(echo $@ | bash 2>&-)
+  # ES_2=$?
 
   # compare result
   if [ "$TEST1" == "$TEST2" ] && [ "$ES_1" == "$ES_2" ]; then
@@ -107,6 +119,7 @@ if [ "$1" == "cd" ] || [ "$1" == "all" ]; then
   exec_test 'cd /Users ; pwd'
   exec_test 'cd ; pwd'
   exec_test 'cd . ; pwd'
+  exec_test 'cd -; pwd; cd; cd -'
   exec_test 'mkdir test_dir ; cd test_dir ; rm -rf ../test_dir ; cd . ; cd .. ; pwd'
 fi
 
@@ -163,6 +176,8 @@ if [ "$1" == "export" ] || [ "$1" == "all" ]; then
   exec_test 'export TE+S=T="" ; ' $ENV_SHOW
   exec_test 'export TEST=LOL ; echo $TEST ; ' $ENV_SHOW
   exec_test 'export TEST=LOL ; echo $TEST$TEST$TEST=lol$TEST'
+  exec_test 'export TEST1=LOL TEST2=PIKAPIKA; echo $TEST ; ' $ENV_SHOW
+  exec_test 'export TEST=LOL; unset TEST' $ENV_SHOW
   exec_test 'export TEST=LOL ; export TEST+=LOL ; echo $TEST ; ' $ENV_SHOW
   exec_test $ENV_SHOW
   exec_test $EXPORT_SHOW
@@ -181,12 +196,13 @@ if [ "$1" == "redirect" ] || [ "$1" == "all" ]; then
   exec_test 'rm -f ls; cat > ls < ls; rm -f ls'
   exec_test 'ls > ls'
   exec_test 'cat <ls'
+  exec_test 'cat | <Makefile cat; hello'
   exec_test 'cat <test.sh <ls'
-  exec_test 'cat << stop \n1\nstop\n'
-  exec_test 'cat << stop\n1\EOF\nstopa\nstop'
-  exec_test 'cat <test.sh <<stop \n1\nstop'
-  exec_test 'cat <<stop<ls  \n1\nstop'
-  exec_test 'cat <test.sh << stop1 <<stop2 \na\n \nb \nc \nstop1\n run2 \nstop2'
+  exec_test 'cat << stop;1;stop;'
+  exec_test 'cat << stop;1\EOF;stopa;stop'
+  exec_test 'cat <test.sh <<stop;1;stop'
+  exec_test 'cat <<stop<ls;1;stop'
+  exec_test 'cat <test.sh << stop1 <<stop2;a;;b;c;stop1; run2;stop2'
   exec_test 'rm -f ls >ls'
 fi
 
@@ -195,6 +211,12 @@ fi
 if [ "$1" == "multi" ] || [ "$1" == "all" ]; then
   printf $BOLDMAGENTA"\n\tMULTI TESTS\n"$RESET
   exec_test 'echo testing multi >lol ; echo <lol <lola ; echo "test 1  | and 2" >>lol ; cat <lol ; cat ../Makefile <lol | grep minishell'
+  exec_test 'unset PATH; /bin/ls'
+  exec_test 'unset PATH; ./Makefile'
+  exec_test 'cd; unset HOME; cd'
+  exec_test 'pwd; unset HOME; pwd; cd; pwd'
+  exec_test 'pwd; unset HOME; pwd; cd; pwd'
+  exec_test 'ls | export TEST=5; echo $TEST'
 fi
 
 # SYNTAX 
