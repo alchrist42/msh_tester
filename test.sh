@@ -38,19 +38,18 @@ function exec_test()
 {
   
   # execute commands, separated by ';' in minishell, using nfifo
-  ./minishell < $pipe >msh_log 2>&-  &
+  ./minishell <$pipe >msh_log 2>&-  &
+  mshpid=$!
   IFS=';' read -ra CMND <<< "$@"
   for command in "${CMND[@]}"; do
     echo $command > $pipe
   done
-  
-  echo 'exit' > $pipe
-  sleep 0.02
+  # echo "leaks $mshpid | grep 'leaks for'  >> leaks" > $pipe
+  echo 'exit' > $pipe 
+  sleep 0.01
   wait $!
   ES_1=$?
   TEST1=$(cat msh_log)
-  rm msh_log
-  sleep 0.02
 
   # execute commands in bash
   bash < $pipe >msh_log 2>&-  &
@@ -59,12 +58,9 @@ function exec_test()
     echo $command > $pipe
   done
   echo 'exit' > $pipe
-  sleep 0.02
   wait $!
   ES_2=$?
   TEST2=$(cat msh_log)
-  # TEST2=$(echo $@ | bash 2>&-)
-  # ES_2=$?
 
   # compare result
   if [ "$TEST1" == "$TEST2" ] && [ "$ES_1" == "$ES_2" ]; then
@@ -103,8 +99,6 @@ if [ "$1" == "all" ]; then
   printf "|_| |_|_____|_| \_|_____|_____/|_| |_|______|______|______|\n$RESET"
 fi
 
-# Run leacks checker
-bash check_leaks.sh > leaks 2>&- &
 
 # ECHO TESTS
 if [ "$1" == "echo" ] || [ "$1" == "all" ]; then
