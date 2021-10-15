@@ -43,6 +43,7 @@ function exec_test()
   for command in "${CMND[@]}"; do
     echo $command > $pipe
   done
+  
   echo 'exit' > $pipe
   sleep 0.02
   wait $!
@@ -102,6 +103,8 @@ if [ "$1" == "all" ]; then
   printf "|_| |_|_____|_| \_|_____|_____/|_| |_|______|______|______|\n$RESET"
 fi
 
+# Run leacks checker
+bash check_leaks.sh > leaks 2>&- &
 
 # ECHO TESTS
 if [ "$1" == "echo" ] || [ "$1" == "all" ]; then
@@ -177,6 +180,7 @@ if [ "$1" == "export" ] || [ "$1" == "all" ]; then
   exec_test 'export TEST=LOL ; echo $TEST ; ' $ENV_SHOW
   exec_test 'export TEST=LOL ; echo $TEST$TEST$TEST=lol$TEST'
   exec_test 'export TEST1=LOL TEST2=PIKAPIKA; echo $TEST ; ' $ENV_SHOW
+  exec_test 'export TEST1=LOL TEST2' $ENV_SHOW
   exec_test 'export TEST=LOL; unset TEST' $ENV_SHOW
   exec_test 'export TEST=LOL ; export TEST+=LOL ; echo $TEST ; ' $ENV_SHOW
   exec_test $ENV_SHOW
@@ -217,6 +221,7 @@ if [ "$1" == "multi" ] || [ "$1" == "all" ]; then
   exec_test 'pwd; unset HOME; pwd; cd; pwd'
   exec_test 'pwd; unset HOME; pwd; cd; pwd'
   exec_test 'ls | export TEST=5; echo $TEST'
+  exec_test 'export TEST1=LOL TEST2=PIKAPIKA; unset TEST1 TEST2; echo $TEST1; echo $TEST2'
 fi
 
 # SYNTAX 
