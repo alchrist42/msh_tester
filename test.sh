@@ -247,6 +247,10 @@ fi
 if [ "$1" == "syntax" ] || [ "$1" == "all" ]; then
   printf $BOLDMAGENTA"\n\tSYNTAX\n"$RESET
   exec_test ''
+  exec_test '" echo" lol'
+  exec_test '"echo " lol"'
+  exec_test '" echo" | " pwd"'
+  exec_test '"echo " | "pwd "'
   exec_test '/bin/lsa'
   exec_test './Makefile'
   exec_test '| test'
