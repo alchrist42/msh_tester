@@ -51,8 +51,9 @@ function exec_test()
     echo 'exit' > $pipe 
     sleep 0.02
     wait $!
+    sleep 0.02
     if [[ $(cat leaks 2>&-) != "" ]]; then
-      printf "\n$BOLDRED LEAKS! $YELLOW%s$RESET" "$@"
+      printf "\n$BOLDRED LEAKS! $YELLOW%s$RESET\n" "$@"
       rm -f leaks
     else
       printf "$BOLDGREEN%s$RESET" "✓ "
@@ -214,6 +215,8 @@ if [ "$1" == "redirect" ] || [ "$1" == "all" ]; then
   exec_test 'rm -f ls; cat > ls < ls; rm -f ls'
   exec_test 'ls > ls'
   exec_test 'cat <ls'
+  exec_test 'pwd >pwd; cat pwd'
+  exec_test 'pwd >pwd; cat pwd | echo'
   exec_test 'cat | <Makefile cat; hello'
   exec_test 'cat <test.sh <ls'
   exec_test 'cat << stop;1;stop;'
@@ -231,6 +234,8 @@ if [ "$1" == "multi" ] || [ "$1" == "all" ]; then
   exec_test 'echo testing multi >lol ; echo <lol <lola ; echo "test 1  | and 2" >>lol ; cat <lol ; cat ../Makefile <lol | grep minishell'
   exec_test 'unset PATH; /bin/ls'
   exec_test 'unset PATH; ./Makefile'
+  exec_test 'echo 5 > ls; <5 cat; rm 5'
+  exec_test 'ls | echo 6 > ls; <6 cat; rm 6'
   exec_test 'cd; unset HOME; cd'
   exec_test 'pwd; unset HOME; pwd; cd; pwd'
   exec_test 'pwd; unset HOME; pwd; cd; pwd'
@@ -350,4 +355,4 @@ if [[ "$1" != "" ]] && (( $TOTAL > 0)); then
   printf "\nPASS: $GOOD / $TOTAL ($PROCENT%%)$RESET\n"
 fi
 
-rm -f $pipe lol ls 1 test big_file msh_log leaks
+rm -f $pipe lol ls 1 test big_file msh_log leaks pwd
