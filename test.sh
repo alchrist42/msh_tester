@@ -266,6 +266,7 @@ if [ "$1" == "syntax" ] || [ "$1" == "all" ]; then
   exec_test 'rm -f ls; cat < ls > ls'
   exec_test "grep -z"
   exec_test "ls'| 'wc -l"
+  exec_test "/ls"
 fi
 
 # EXIT
