@@ -1,4 +1,4 @@
-# MINISHELL-TESTER-2020.08
+# MSH-TESTER-2021.09
 
 RESET="\033[0m"
 BLACK="\033[30m"
@@ -240,9 +240,9 @@ if [ "$1" == "multi" ] || [ "$1" == "all" ]; then
   exec_test 'cd .. > 1; pwd'
   exec_test 'cd .. > 1| pwd'
   exec_test 'pwd > 1'
+  exec_test 'pwd > 1; cat 1'
   exec_test 'pwd > 1; pwd'
   exec_test 'pwd > 1| pwd'
-  exec_test 'pwd; unset HOME; pwd; cd; pwd'
   exec_test 'pwd; unset HOME; pwd; cd; pwd'
   exec_test 'ls | export TEST=5; echo $TEST'
   exec_test 'export TEST1=LOL TEST2=PIKAPIKA; unset TEST1 TEST2; echo $TEST1; echo $TEST2'
@@ -291,27 +291,23 @@ if [ "$1" == "exit" ] || [ "$1" == "all" ]; then
 fi
 
 
-
-# BONUS QUOTES
-if [ "$1" == "bonus" ] || [ "$1" == "quote" ]; then
+# BONUS
+if [ "$1" == "bonus" ] || [ "$1" == "quote" ] || [ "$1" == "wildcard" ] || [ "$1" == "oper" ]; then
   Compile and set executable rights
   make bonus -C ../ > /dev/null
   cp ../minishell .
   chmod 755 minishell
+fi
 
+# BONUS QUOTES
+if [ "$1" == "bonus" ] || [ "$1" == "quote" ]; then
   printf $BOLDMAGENTA"\n\tBONUS QUOTE\n"$RESET
   exec_test "echo '"$USER"'"
   exec_test "echo "'$USER'""
 fi
 
-
 # BONUS WILDCARD
 if [ "$1" == "bonus" ] || [ "$1" == "wildcard" ]; then
-  Compile and set executable rights
-  make bonus -C ../ > /dev/null
-  cp ../minishell .
-  chmod 755 minishell
-
   printf $BOLDMAGENTA"\n\tBONUS WILDCARD\n"$RESET
   exec_test "echo * | wc"
   exec_test "cd .. ; echo * | wc"
@@ -324,12 +320,8 @@ fi
 
 # BONUS OPERATOR && || ()
 if [ "$1" == "bonus" ] || [ "$1" == "oper" ]; then
-  Compile and set executable rights
-  make bonus -C ../ > /dev/null
-  cp ../minishell .
-  chmod 755 minishell
-
   printf $BOLDMAGENTA"\n\tBONUS OPERATOR \$\$ || () \n"$RESET
+  
   exec_test "true && ls"
   exec_test "false&&ls"
   exec_test "true||ls"
