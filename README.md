@@ -1,8 +1,9 @@
 # MSH-TESTER  
+*Tester for shool21 (ecole42) project "minishell"*
 
 ## Requirements
 
-You can redirect the read line prompt with the following commands:  
+You can redirect the read line prompt with the following commands in your code:  
 ``rl_outstream = stderr;`` - *before main loop*.  
 ``write(2, ...);`` - *for any error or info messages*  
 
